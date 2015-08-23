@@ -16,10 +16,69 @@
 #include "battery_complication.h"
 #include "bluetooth_complication.h"
 
+static char complications_default_left[] = "foos";
+static char complications_default_right[] = "bars";
+
+void window_render(void) {
+  layer_mark_dirty(window_get_root_layer(window));
+}
+
 static void bg_update_proc(Layer *layer, GContext *ctx) {
   graphics_context_set_fill_color(ctx, GColorBlack);
   for (int i = 0; i < NUM_CLOCK_TICKS; i++)
     graphics_fill_rect(ctx, tick_rects[i], 0, 0x0000);
+}
+
+static void complications_update_proc(Layer *layer, GContext *ctx) {
+  GRect bounds = layer_get_bounds(layer);
+  int inset_x = 6; int inset_y = 5; int text_h = 18 + 2;
+  GRect top_frame = GRect(inset_x, inset_y, bounds.size.w - inset_x * 2, text_h);
+  GRect bottom_frame = GRect(inset_x, bounds.size.h - inset_y - text_h, bounds.size.w - inset_x * 2, text_h);
+
+  graphics_context_set_text_color(ctx, GColorBlack);
+  GFont *font = fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD);
+
+  char text[9];
+  strcpy(text, complications_tl.left);
+  graphics_draw_text(
+    ctx,
+    strcat(text, complications_tl.right),
+    font,
+    top_frame,
+    GTextOverflowModeFill,
+    GTextAlignmentLeft,
+    NULL
+  );
+  strcpy(text, complications_tr.left);
+  graphics_draw_text(
+    ctx,
+    strcat(text, complications_tr.right),
+    font,
+    top_frame,
+    GTextOverflowModeFill,
+    GTextAlignmentRight,
+    NULL
+  );
+  strcpy(text, complications_bl.left);
+  graphics_draw_text(
+    ctx,
+    strcat(text, complications_bl.right),
+    font,
+    bottom_frame,
+    GTextOverflowModeFill,
+    GTextAlignmentLeft,
+    NULL
+  );
+  strcpy(text, complications_br.left);
+  graphics_draw_text(
+    ctx,
+    strcat(text, complications_br.right),
+    font,
+    bottom_frame,
+    GTextOverflowModeFill,
+    GTextAlignmentRight,
+    NULL
+  );
 }
 
 static void hands_update_proc(Layer *layer, GContext *ctx) {
@@ -64,10 +123,6 @@ static void hands_update_proc(Layer *layer, GContext *ctx) {
   graphics_fill_circle(ctx, GPoint(center.x, center.y), 3);
 }
 
-void window_render(void) {
-  layer_mark_dirty(window_get_root_layer(window));
-}
-
 static void layer_create_update_add(Layer *layer, Layer *window_layer, LayerUpdateProc update_proc) {
   GRect bounds = layer_get_bounds(window_layer);
   layer = layer_create(bounds);
@@ -75,8 +130,16 @@ static void layer_create_update_add(Layer *layer, Layer *window_layer, LayerUpda
   layer_add_child(window_layer, layer);
 }
 
+static void init_complication(ComplicationZone *complication) {
+  *complication = (ComplicationZone) {
+    .left = complications_default_left,
+    .right = complications_default_right,
+  };
+}
+
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
+  GRect bounds = layer_get_bounds(window_layer);
 
   time_complication_update();
   battery_complication_update(battery_state_service_peek());
@@ -84,11 +147,19 @@ static void window_load(Window *window) {
 
   layer_create_update_add(bg_layer, window_layer, bg_update_proc);
   layer_create_update_add(hands_layer, window_layer, hands_update_proc);
+  layer_create_update_add(complications_layer, window_layer, complications_update_proc);
+
+  init_complication(&complications_tl);
+  init_complication(&complications_tr);
+  init_complication(&complications_bl);
+  init_complication(&complications_br);
 }
 
 static void window_unload(Window *window) {
   layer_destroy(bg_layer);
+  layer_destroy(complications_layer);
   layer_destroy(hands_layer);
+
   gpath_destroy(minute_arrow);
   gpath_destroy(hour_arrow);
 }
