@@ -11,7 +11,7 @@
 // int tm_wday;        [> day of the week, range 0 to 6    <]
 // int tm_yday;        [> day in the year, range 0 to 365  <]
 // int tm_isdst;       [> daylight saving time             <]
-struct tm *time_complication_tm;
+char time_complication_year[5];
 
 double time_complication_minute_angle;
 double time_complication_hour_angle;

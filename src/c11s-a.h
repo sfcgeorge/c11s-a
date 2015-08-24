@@ -6,6 +6,28 @@ void window_render(void);
 
 #define NUM_CLOCK_TICKS 12
 
+// Settings keys
+#define COMPLICATIONS_TL_L 1
+#define COMPLICATIONS_TL_R 2
+#define COMPLICATIONS_TR_L 3
+#define COMPLICATIONS_TR_R 4
+#define COMPLICATIONS_BL_L 5
+#define COMPLICATIONS_BL_R 6
+#define COMPLICATIONS_BR_L 7
+#define COMPLICATIONS_BR_R 8
+
+// Settings values
+#define TIME_COMPLICATION_YEAR 1
+#define TIME_COMPLICATION_MONTH 2
+#define TIME_COMPLICATION_MONTH_NAME 3
+#define TIME_COMPLICATION_WEEK 4
+#define TIME_COMPLICATION_DAY 5
+#define TIME_COMPLICATION_DAY_NAME 6
+#define TIME_COMPLICATION_HOUR 7
+#define TIME_COMPLICATION_MINUTE 8
+#define TIME_COMPLICATION_SECOND 9
+#define TIME_COMPLICATION_AMPM 10
+
 static Window *window;
 
 static Layer *bg_layer, *hands_layer, *complications_layer;

@@ -137,6 +137,28 @@ static void init_complication(ComplicationZone *complication) {
   };
 }
 
+static char* complication_data(int d) {
+  switch (d) {
+    case TIME_COMPLICATION_YEAR:
+      return time_complication_year;
+    default:
+      return complications_default_left;
+  }
+}
+
+static void set_complication(ComplicationZone *complication, int l, int r) {
+  complication->left = complication_data(l);
+  complication->right = complication_data(r);
+}
+
+static void load_complication_settings(void) {
+  set_complication(
+    &complications_tl,
+    persist_read_int(COMPLICATIONS_TL_L),
+    persist_read_int(COMPLICATIONS_TL_R)
+  );
+}
+
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
@@ -153,6 +175,8 @@ static void window_load(Window *window) {
   init_complication(&complications_tr);
   init_complication(&complications_bl);
   init_complication(&complications_br);
+
+  load_complication_settings();
 }
 
 static void window_unload(Window *window) {
@@ -162,6 +186,13 @@ static void window_unload(Window *window) {
 
   gpath_destroy(minute_arrow);
   gpath_destroy(hour_arrow);
+}
+
+static void inbox_received_handler(DictionaryIterator *settings, void *context) {
+  Tuple *setting = dict_read_first(settings);
+  while ((setting = dict_read_next(settings))) {
+    persist_write_int(setting->key, setting->value->int32);
+  }
 }
 
 static void init(void) {
@@ -184,6 +215,9 @@ static void init(void) {
   tick_timer_service_subscribe(SECOND_UNIT, time_complication_handler);
   battery_state_service_subscribe(battery_complication_handler);
   bluetooth_connection_service_subscribe(bluetooth_complication_handler);
+
+  app_message_register_inbox_received(inbox_received_handler);
+  app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
 }
 
 static void deinit(void) {

@@ -13,7 +13,14 @@
     "configurable"
   ],
   "appKeys": {
-    "dummy": 0
+    "COMPLICATIONS_TL_L": 1,
+    "COMPLICATIONS_TL_R": 2,
+    "COMPLICATIONS_TR_L": 3,
+    "COMPLICATIONS_TR_R": 4,
+    "COMPLICATIONS_BL_L": 5,
+    "COMPLICATIONS_BL_R": 6,
+    "COMPLICATIONS_BR_L": 7,
+    "COMPLICATIONS_BR_R": 8
   },
   "resources": {
     "media": []
