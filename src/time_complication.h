@@ -17,6 +17,7 @@ char time_complication_month_name[4];
 char time_complication_week[3];
 char time_complication_year_day[4];
 char time_complication_month_day[3];
+char time_complication_month_day_suffixed[5];
 char time_complication_week_day[2];
 char time_complication_day_name[3];
 char time_complication_hour[3];
@@ -32,5 +33,3 @@ double time_complication_second_angle;
 void time_complication_handler(struct tm *tick_time, TimeUnits units_changed);
 void time_complication_update(void);
 
-const char MONTH_NAMES[12][4] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-const char DAY_NAMES[7][3] = {"Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"};

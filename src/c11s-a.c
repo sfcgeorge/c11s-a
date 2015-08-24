@@ -146,6 +146,7 @@ static char* complication_data(int d) {
     case TIME_COMPLICATION_WEEK: return time_complication_week;
     case TIME_COMPLICATION_YEAR_DAY: return time_complication_year_day;
     case TIME_COMPLICATION_MONTH_DAY: return time_complication_month_day;
+    case TIME_COMPLICATION_MONTH_DAY_SUFFIXED: return time_complication_month_day_suffixed;
     case TIME_COMPLICATION_WEEK_DAY: return time_complication_week_day;
     case TIME_COMPLICATION_DAY_NAME: return time_complication_day_name;
     case TIME_COMPLICATION_HOUR: return time_complication_hour;
@@ -172,6 +173,16 @@ static void load_complication_settings(void) {
     &complications_tr,
     persist_read_int(COMPLICATIONS_TR_L),
     persist_read_int(COMPLICATIONS_TR_R)
+  );
+  set_complication(
+    &complications_bl,
+    persist_read_int(COMPLICATIONS_BL_L),
+    persist_read_int(COMPLICATIONS_BL_R)
+  );
+  set_complication(
+    &complications_br,
+    persist_read_int(COMPLICATIONS_BR_L),
+    persist_read_int(COMPLICATIONS_BR_R)
   );
 }
 
