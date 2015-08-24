@@ -190,8 +190,9 @@ static void window_unload(Window *window) {
 
 static void inbox_received_handler(DictionaryIterator *settings, void *context) {
   Tuple *setting = dict_read_first(settings);
-  while ((setting = dict_read_next(settings))) {
+  while (setting) {
     persist_write_int(setting->key, setting->value->int32);
+    setting = dict_read_next(settings);
   }
 }
 
