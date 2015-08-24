@@ -189,6 +189,13 @@ static void load_complication_settings(void) {
     persist_read_int(COMPLICATIONS_BR_L),
     persist_read_int(COMPLICATIONS_BR_R)
   );
+
+  if (persist_read_int(HIDE_SECONDS) == 1) {
+    tick_timer_service_subscribe(MINUTE_UNIT, time_complication_handler);
+  }
+  else {
+    tick_timer_service_subscribe(SECOND_UNIT, time_complication_handler);
+  }
 }
 
 static void window_load(Window *window) {

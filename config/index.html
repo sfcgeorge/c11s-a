@@ -271,8 +271,8 @@
 
       <div class='item-container-content'>
         <label class="item">
-          Display Seconds
-          <input type="checkbox" class="item-toggle" id="DISPLAY_SECONDS" checked>
+          Hide Seconds
+          <input type="checkbox" class="item-toggle" id="HIDE_SECONDS" checked>
         </label>
       </div>
 
@@ -297,7 +297,7 @@
           'COMPLICATIONS_BR_L': $("#COMPLICATIONS_BR_L").val() * 1,
           'COMPLICATIONS_BR_R': $("#COMPLICATIONS_BR_R").val() * 1,
 
-          'DISPLAY_SECONDS': $("#DISPLAY_SECONDS").prop('checked') * 1
+          'HIDE_SECONDS': $("#HIDE_SECONDS").prop('checked') * 1
         };
 
         // Save for next launch
@@ -310,7 +310,7 @@
         localStorage['COMPLICATIONS_BR_L'] = options['COMPLICATIONS_BR_L'];
         localStorage['COMPLICATIONS_BR_R'] = options['COMPLICATIONS_BR_R'];
 
-        localStorage['DISPLAY_SECONDS'] = options['DISPLAY_SECONDS'];
+        localStorage['HIDE_SECONDS'] = options['HIDE_SECONDS'];
 
         console.log('Got options: ' + JSON.stringify(options));
         return options;
@@ -347,7 +347,7 @@
         $("#COMPLICATIONS_BR_L").val(localStorage['COMPLICATIONS_BR_L']);
         $("#COMPLICATIONS_BR_R").val(localStorage['COMPLICATIONS_BR_R']);
 
-        $("#DISPLAY_SECONDS").val(localStorage['DISPLAY_SECONDS']);
+        $("#HIDE_SECONDS").prop("checked", localStorage['HIDE_SECONDS']);
       })();
     </script>
   </body>
