@@ -97,7 +97,7 @@ static void hands_update_proc(Layer *layer, GContext *ctx) {
   gpath_rotate_to(minute_arrow, time_complication_minute_angle);
   gpath_draw_filled(ctx, minute_arrow);
 
-  if (battery_complication_charge_percent > 20) {
+  if (battery_complication_charge_percent > 20 && persist_read_int(HIDE_SECONDS) == 0) {
     #ifdef PBL_COLOR
       graphics_context_set_fill_color(ctx, GColorRed);
       graphics_context_set_stroke_color(ctx, GColorRed);
