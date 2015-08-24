@@ -29,7 +29,7 @@ void window_render(void);
 #define TIME_COMPLICATION_MINUTE 10
 #define TIME_COMPLICATION_SECOND 11
 #define TIME_COMPLICATION_AMPM 12
-#define TIME_COMPLICATION_DST 13;
+#define TIME_COMPLICATION_DST 13
 
 static Window *window;
 

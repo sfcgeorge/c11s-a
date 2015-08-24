@@ -18,6 +18,7 @@
 
 static char complications_default_left[] = "foos";
 static char complications_default_right[] = "bars";
+static char complications_default[] = "";
 
 void window_render(void) {
   layer_mark_dirty(window_get_root_layer(window));
@@ -143,13 +144,16 @@ static char* complication_data(int d) {
     case TIME_COMPLICATION_MONTH: return time_complication_month;
     case TIME_COMPLICATION_MONTH_NAME: return time_complication_month_name;
     case TIME_COMPLICATION_WEEK: return time_complication_week;
-    case TIME_COMPLICATION_DAY: return time_complication_day;
+    case TIME_COMPLICATION_YEAR_DAY: return time_complication_year_day;
+    case TIME_COMPLICATION_MONTH_DAY: return time_complication_month_day;
+    case TIME_COMPLICATION_WEEK_DAY: return time_complication_week_day;
     case TIME_COMPLICATION_DAY_NAME: return time_complication_day_name;
     case TIME_COMPLICATION_HOUR: return time_complication_hour;
     case TIME_COMPLICATION_MINUTE: return time_complication_minute;
     case TIME_COMPLICATION_SECOND: return time_complication_second;
-    case TIME_COMPLICATION_AMPM: return 0time_complication_ampm;
-    default: return complications_default_left;
+    case TIME_COMPLICATION_AMPM: return time_complication_ampm;
+    case TIME_COMPLICATION_DST: return time_complication_dst;
+    default: return complications_default;
   }
 }
 
@@ -163,6 +167,11 @@ static void load_complication_settings(void) {
     &complications_tl,
     persist_read_int(COMPLICATIONS_TL_L),
     persist_read_int(COMPLICATIONS_TL_R)
+  );
+  set_complication(
+    &complications_tr,
+    persist_read_int(COMPLICATIONS_TR_L),
+    persist_read_int(COMPLICATIONS_TR_R)
   );
 }
 
