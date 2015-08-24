@@ -34,6 +34,8 @@ void window_render(void);
 
 #define BLUETOOTH_COMPLICATION_BLUETOOTH_CONNECTION 20
 
+#define BATTERY_COMPLICATION_CHARGER_CONNECTION 30
+
 static Window *window;
 
 static Layer *bg_layer, *hands_layer, *complications_layer;
