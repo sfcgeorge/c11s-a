@@ -139,10 +139,17 @@ static void init_complication(ComplicationZone *complication) {
 
 static char* complication_data(int d) {
   switch (d) {
-    case TIME_COMPLICATION_YEAR:
-      return time_complication_year;
-    default:
-      return complications_default_left;
+    case TIME_COMPLICATION_YEAR: return time_complication_year;
+    case TIME_COMPLICATION_MONTH: return time_complication_month;
+    case TIME_COMPLICATION_MONTH_NAME: return time_complication_month_name;
+    case TIME_COMPLICATION_WEEK: return time_complication_week;
+    case TIME_COMPLICATION_DAY: return time_complication_day;
+    case TIME_COMPLICATION_DAY_NAME: return time_complication_day_name;
+    case TIME_COMPLICATION_HOUR: return time_complication_hour;
+    case TIME_COMPLICATION_MINUTE: return time_complication_minute;
+    case TIME_COMPLICATION_SECOND: return time_complication_second;
+    case TIME_COMPLICATION_AMPM: return 0time_complication_ampm;
+    default: return complications_default_left;
   }
 }
 
@@ -194,6 +201,7 @@ static void inbox_received_handler(DictionaryIterator *settings, void *context) 
     persist_write_int(setting->key, setting->value->int32);
     setting = dict_read_next(settings);
   }
+  load_complication_settings();
 }
 
 static void init(void) {
