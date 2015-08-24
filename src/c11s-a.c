@@ -190,7 +190,9 @@ static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
 
-  time_complication_update();
+  time_t now = time(NULL);
+  struct tm *tm = localtime(&now);
+  time_complication_update(tm, YEAR_UNIT);
   battery_complication_update(battery_state_service_peek());
   bluetooth_complication_update(bluetooth_connection_service_peek());
 

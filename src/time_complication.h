@@ -21,8 +21,8 @@ char time_complication_month_day_suffixed[5];
 char time_complication_week_day[2];
 char time_complication_day_name[3];
 char time_complication_hour[3];
-char time_complication_minute[3];
-char time_complication_second[3];
+char time_complication_minute[4];
+char time_complication_second[4];
 char time_complication_ampm[3];
 char time_complication_dst[4];
 
@@ -30,6 +30,6 @@ double time_complication_minute_angle;
 double time_complication_hour_angle;
 double time_complication_second_angle;
 
-void time_complication_handler(struct tm *tick_time, TimeUnits units_changed);
-void time_complication_update(void);
+void time_complication_handler(struct tm *tm, TimeUnits units_changed);
+void time_complication_update(struct tm *tm, TimeUnits units_changed);
 

@@ -32,6 +32,8 @@ void window_render(void);
 #define TIME_COMPLICATION_AMPM 13
 #define TIME_COMPLICATION_DST 14
 
+#define BLUETOOTH_COMPLICATION_BLUETOOTH_CONNECTION 20
+
 static Window *window;
 
 static Layer *bg_layer, *hands_layer, *complications_layer;
