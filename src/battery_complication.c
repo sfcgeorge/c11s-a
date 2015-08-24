@@ -6,9 +6,9 @@
 void battery_complication_update(BatteryChargeState battery) {
   battery_complication_charge_percent = battery.charge_percent;
   battery_complication_is_charging = battery.is_charging;
-  if (battery.is_charging) { battery_complication_charger_connection = "Chg"; }
-  else if (battery.is_plugged) { battery_complication_charger_connection = "Plg"; }
-  else { battery_complication_charger_connection = ""; }
+  if (battery.is_charging) { strncpy(battery_complication_charger_connection, "Chg", 4); }
+  else if (battery.is_plugged) { strncpy(battery_complication_charger_connection, "Plg", 4); }
+  else { strncpy(battery_complication_charger_connection, "", 4); }
 
   if (battery_complication_charge_percent > 20) {
     tick_timer_service_subscribe(SECOND_UNIT, time_complication_handler);
