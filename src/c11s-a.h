@@ -16,6 +16,8 @@ void window_render(void);
 #define COMPLICATIONS_BR_L 7
 #define COMPLICATIONS_BR_R 8
 
+#define DISPLAY_SECONDS 20
+
 // Settings values
 #define TIME_COMPLICATION_YEAR 1
 #define TIME_COMPLICATION_MONTH 2

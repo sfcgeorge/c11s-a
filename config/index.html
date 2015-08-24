@@ -42,9 +42,6 @@
             </optgroup>
           </select>
         </label>
-      </div>
-
-      <div class='item-container-content'>
         <label class="item">
           Top-left Right
           <select id="COMPLICATIONS_TL_R" dir='rtl' class="item-select">
@@ -76,9 +73,6 @@
             </optgroup>
           </select>
         </label>
-      </div>
-
-      <div class='item-container-content'>
         <label class="item">
           Top-right Left
           <select id="COMPLICATIONS_TR_L" dir='rtl' class="item-select">
@@ -110,9 +104,6 @@
             </optgroup>
           </select>
         </label>
-      </div>
-
-      <div class='item-container-content'>
         <label class="item">
           Top-right Right
           <select id="COMPLICATIONS_TR_R" dir='rtl' class="item-select">
@@ -144,9 +135,6 @@
             </optgroup>
           </select>
         </label>
-      </div>
-
-      <div class='item-container-content'>
         <label class="item">
           Bottom-left Left
           <select id="COMPLICATIONS_BL_L" dir='rtl' class="item-select">
@@ -178,9 +166,6 @@
             </optgroup>
           </select>
         </label>
-      </div>
-
-      <div class='item-container-content'>
         <label class="item">
           Bottom-left Right
           <select id="COMPLICATIONS_BL_R" dir='rtl' class="item-select">
@@ -212,9 +197,6 @@
             </optgroup>
           </select>
         </label>
-      </div>
-
-      <div class='item-container-content'>
         <label class="item">
           Bottom-right Left
           <select id="COMPLICATIONS_BR_L" dir='rtl' class="item-select">
@@ -246,9 +228,6 @@
             </optgroup>
           </select>
         </label>
-      </div>
-
-      <div class='item-container-content'>
         <label class="item">
           Bottom-right Right
           <select id="COMPLICATIONS_BR_R" dir='rtl' class="item-select">
@@ -288,6 +267,19 @@
     </div>
 
     <div class='item-container'>
+      <div class='item-container-header'>Settings</div>
+
+      <div class='item-container-content'>
+        <label class="item">
+          Display Seconds
+          <input type="checkbox" class="item-toggle" id="DISPLAY_SECONDS" checked>
+        </label>
+      </div>
+
+      <div class='item-container-footer'></div>
+    </div>
+
+    <div class='item-container'>
       <div class='button-container'>
         <input id='submit_button' type='button' class='item-button' value='SUBMIT'>
       </div>
@@ -303,7 +295,9 @@
           'COMPLICATIONS_BL_L': $("#COMPLICATIONS_BL_L").val() * 1,
           'COMPLICATIONS_BL_R': $("#COMPLICATIONS_BL_R").val() * 1,
           'COMPLICATIONS_BR_L': $("#COMPLICATIONS_BR_L").val() * 1,
-          'COMPLICATIONS_BR_R': $("#COMPLICATIONS_BR_R").val() * 1
+          'COMPLICATIONS_BR_R': $("#COMPLICATIONS_BR_R").val() * 1,
+
+          'DISPLAY_SECONDS': $("#DISPLAY_SECONDS").prop('checked') * 1
         };
 
         // Save for next launch
@@ -315,6 +309,8 @@
         localStorage['COMPLICATIONS_BL_R'] = options['COMPLICATIONS_BL_R'];
         localStorage['COMPLICATIONS_BR_L'] = options['COMPLICATIONS_BR_L'];
         localStorage['COMPLICATIONS_BR_R'] = options['COMPLICATIONS_BR_R'];
+
+        localStorage['DISPLAY_SECONDS'] = options['DISPLAY_SECONDS'];
 
         console.log('Got options: ' + JSON.stringify(options));
         return options;
@@ -350,6 +346,8 @@
         $("#COMPLICATIONS_BL_R").val(localStorage['COMPLICATIONS_BL_R']);
         $("#COMPLICATIONS_BR_L").val(localStorage['COMPLICATIONS_BR_L']);
         $("#COMPLICATIONS_BR_R").val(localStorage['COMPLICATIONS_BR_R']);
+
+        $("#DISPLAY_SECONDS").val(localStorage['DISPLAY_SECONDS']);
       })();
     </script>
   </body>

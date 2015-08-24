@@ -115,7 +115,9 @@ static void hands_update_proc(Layer *layer, GContext *ctx) {
       .y = (int16_t)(cos_lookup(time_complication_second_angle) * SECOND_HAND_OPP_LENGTH / TRIG_MAX_RATIO) + center.y,
     };
     graphics_draw_line(ctx, second_hand_opp, second_hand);
-    graphics_fill_circle(ctx, second_hand, 5);
+    if (battery_complication_is_charging) { graphics_fill_circle(ctx, second_hand_opp, 5); }
+    else if (battery_complication_is_plugged) {}
+    else { graphics_fill_circle(ctx, second_hand, 5); }
   }
 
   if (!bluetooth_complication_bluetooth)
@@ -154,6 +156,9 @@ static char* complication_data(int d) {
     case TIME_COMPLICATION_SECOND: return time_complication_second;
     case TIME_COMPLICATION_AMPM: return time_complication_ampm;
     case TIME_COMPLICATION_DST: return time_complication_dst;
+    case BLUETOOTH_COMPLICATION_BLUETOOTH_CONNECTION: return bluetooth_complication_bluetooth_connection;
+    case BATTERY_COMPLICATION_CHARGER_CONNECTION: return battery_complication_charger_connection;
+    case BATTERY_COMPLICATION_CHARGE_LEVEL: return battery_complication_charge_level;
     default: return complications_default;
   }
 }
