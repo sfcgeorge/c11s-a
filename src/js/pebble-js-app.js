@@ -50,15 +50,15 @@ function locationSuccess(pos) {
 
     var weatherData = {
       "WEATHER_TEMPERATURE": Math.round(json.main.temp - 273.15), // Kelvin to C
-      "WEATHER_HIGH": Math.round(json.main.temp_min - 273.15),
-      "WEATHER_LOW": Math.round(json.main.temp_max - 273.15),
+      "WEATHER_HIGH": Math.round(json.main.temp_max - 273.15),
+      "WEATHER_LOW": Math.round(json.main.temp_min - 273.15),
       "WEATHER_HUMIDITY": Math.round(json.main.humidity),
       "WEATHER_WIND_SPEED": Math.round(json.wind.speed)
     };
 
-    Pebble.sendAppMessage(dictionary, function(e) {
+    Pebble.sendAppMessage(weatherData, function() {
       console.log('Weather send successful: ' + JSON.stringify(weatherData));
-    }, function(e) {
+    }, function() {
       console.log('Error sending weather info to Pebble!');
     });
   });
@@ -67,3 +67,12 @@ function locationSuccess(pos) {
 function locationError() {
   console.log('Error requesting location!');
 }
+
+var xhrRequest = function (url, type, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function () {
+    callback(this.responseText);
+  };
+  xhr.open(type, url);
+  xhr.send();
+};

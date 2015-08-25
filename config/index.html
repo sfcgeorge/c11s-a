@@ -14,7 +14,7 @@
 
       <div class='item-container-content'>
         <label class="item">
-          Top-left Left
+          TopLeft A
           <select id="COMPLICATIONS_TL_L" dir='rtl' class="item-select">
             <optgroup>
               <option value="0" class="item-select-option">[none]</option>
@@ -52,7 +52,7 @@
           </select>
         </label>
         <label class="item">
-          Top-left Right
+          TopLeft B
           <select id="COMPLICATIONS_TL_R" dir='rtl' class="item-select">
             <optgroup>
               <option value="0" class="item-select-option" selected>[none]</option>
@@ -90,7 +90,7 @@
           </select>
         </label>
         <label class="item">
-          Top-right Left
+          TopRight A
           <select id="COMPLICATIONS_TR_L" dir='rtl' class="item-select">
             <optgroup>
               <option value="0" class="item-select-option" selected>[none]</option>
@@ -128,7 +128,7 @@
           </select>
         </label>
         <label class="item">
-          Top-right Right
+          TopRight B
           <select id="COMPLICATIONS_TR_R" dir='rtl' class="item-select">
             <optgroup>
               <option value="0" class="item-select-option" selected>[none]</option>
@@ -166,7 +166,7 @@
           </select>
         </label>
         <label class="item">
-          Bottom-left Left
+          BottomLeft A
           <select id="COMPLICATIONS_BL_L" dir='rtl' class="item-select">
             <optgroup>
               <option value="0" class="item-select-option" selected>[none]</option>
@@ -204,7 +204,7 @@
           </select>
         </label>
         <label class="item">
-          Bottom-left Right
+          BottomLeft B
           <select id="COMPLICATIONS_BL_R" dir='rtl' class="item-select">
             <optgroup>
               <option value="0" class="item-select-option" selected>[none]</option>
@@ -242,7 +242,7 @@
           </select>
         </label>
         <label class="item">
-          Bottom-right Left
+          BottomRight A
           <select id="COMPLICATIONS_BR_L" dir='rtl' class="item-select">
             <optgroup>
               <option value="0" class="item-select-option" selected>[none]</option>
@@ -280,7 +280,7 @@
           </select>
         </label>
         <label class="item">
-          Bottom-right Right
+          BottomRight B
           <select id="COMPLICATIONS_BR_R" dir='rtl' class="item-select">
             <optgroup>
               <option value="0" class="item-select-option" selected>[none]</option>
@@ -411,15 +411,15 @@
         $("#COMPLICATIONS_TL_R").val(localStorage['COMPLICATIONS_TL_R'] || 7);
         $("#COMPLICATIONS_TR_L").val(localStorage['COMPLICATIONS_TR_L'] || 2);
         $("#COMPLICATIONS_TR_R").val(localStorage['COMPLICATIONS_TR_R'] || 3);
-        $("#COMPLICATIONS_BL_L").val(localStorage['COMPLICATIONS_BL_L'] || 0);
-        $("#COMPLICATIONS_BL_R").val(localStorage['COMPLICATIONS_BL_R'] || 0);
-        $("#COMPLICATIONS_BR_L").val(localStorage['COMPLICATIONS_BR_L'] || 0);
-        $("#COMPLICATIONS_BR_R").val(localStorage['COMPLICATIONS_BR_R'] || 0);
+        $("#COMPLICATIONS_BL_L").val(localStorage['COMPLICATIONS_BL_L'] || 40);
+        $("#COMPLICATIONS_BL_R").val(localStorage['COMPLICATIONS_BL_R'] || 43);
+        $("#COMPLICATIONS_BR_L").val(localStorage['COMPLICATIONS_BR_L'] || 42);
+        $("#COMPLICATIONS_BR_R").val(localStorage['COMPLICATIONS_BR_R'] || 41);
 
         $("#HIDE_SECONDS").prop("checked", localStorage['HIDE_SECONDS'] * 1);
         $("#DISABLE_WEATHER").prop("checked", localStorage['DISABLE_WEATHER'] * 1);
         $("#TEMPERATURE_UNIT a").removeClass("active");
-        $('#TEMPERATURE_UNIT a[value="' + (localStorage['TEMPERATURE_UNIT'] * 1) + '"]').addClass("active");
+        $('#TEMPERATURE_UNIT a[value="' + (localStorage['TEMPERATURE_UNIT'] || 0 * 1) + '"]').addClass("active");
       })();
     </script>
   </body>

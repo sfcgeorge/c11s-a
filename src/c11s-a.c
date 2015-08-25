@@ -136,8 +136,8 @@ static void layer_create_update_add(Layer *layer, Layer *window_layer, LayerUpda
 
 static void init_complication(ComplicationZone *complication) {
   *complication = (ComplicationZone) {
-    .left = complications_default_left,
-    .right = complications_default_right,
+    .left = complications_default,
+    .right = complications_default,
   };
 }
 
