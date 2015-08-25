@@ -15,6 +15,7 @@
 #include "time_complication.h"
 #include "battery_complication.h"
 #include "bluetooth_complication.h"
+#include "weather_complication.h"
 
 static char complications_default_left[] = "foos";
 static char complications_default_right[] = "bars";
@@ -159,6 +160,11 @@ static char* complication_data(int d) {
     case BLUETOOTH_COMPLICATION_BLUETOOTH_CONNECTION: return bluetooth_complication_bluetooth_connection;
     case BATTERY_COMPLICATION_CHARGER_CONNECTION: return battery_complication_charger_connection;
     case BATTERY_COMPLICATION_CHARGE_LEVEL: return battery_complication_charge_level;
+    case WEATHER_COMPLICATION_TEMPERATURE: return weather_complication_temperature;
+    case WEATHER_COMPLICATION_HIGH: return weather_complication_high;
+    case WEATHER_COMPLICATION_LOW: return weather_complication_low;
+    case WEATHER_COMPLICATION_HUMIDITY: return weather_complication_humidity;
+    case WEATHER_COMPLICATION_WIND_SPEED: return weather_complication_wind_speed;
     default: return complications_default;
   }
 }
@@ -236,6 +242,7 @@ static void inbox_received_handler(DictionaryIterator *settings, void *context) 
     setting = dict_read_next(settings);
   }
   load_complication_settings();
+  weather_complication_update();
 }
 
 static void init(void) {

@@ -10,7 +10,8 @@
     "watchface": true
   },
   "capabilities": [
-    "configurable"
+    "configurable",
+    "location"
   ],
   "appKeys": {
     "COMPLICATIONS_TL_L": 1,
@@ -21,7 +22,14 @@
     "COMPLICATIONS_BL_R": 6,
     "COMPLICATIONS_BR_L": 7,
     "COMPLICATIONS_BR_R": 8,
-    "HIDE_SECONDS": 20
+    "HIDE_SECONDS": 20,
+    "DISABLE_WEATHER": 30,
+    "TEMPERATURE_UNIT": 31,
+    "WEATHER_TEMPERATURE": 40,
+    "WEATHER_HIGH": 41,
+    "WEATHER_LOW": 42,
+    "WEATHER_HUMIDITY": 43,
+    "WEATHER_WIND_SPEED": 44
   },
   "resources": {
     "media": []
