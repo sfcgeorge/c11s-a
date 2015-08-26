@@ -21,6 +21,10 @@ static char complications_default_left[] = "foos";
 static char complications_default_right[] = "bars";
 static char complications_default[] = "";
 
+int int_round(double r) {
+  return (r > 0.0) ? (r + 0.5) : (r - 0.5);
+}
+
 void window_render(void) {
   layer_mark_dirty(window_get_root_layer(window));
 }
@@ -98,33 +102,51 @@ static void hands_update_proc(Layer *layer, GContext *ctx) {
   gpath_rotate_to(minute_arrow, time_complication_minute_angle);
   gpath_draw_filled(ctx, minute_arrow);
 
+  float battery_line_length = (battery_complication_charge_percent / 100.0) * (MINUTE_HAND_LENGTH + HAND_LENGTH_OPP);
+  GPoint battery_line_point_opp = {
+    .x = int_round(-sin_lookup(time_complication_minute_angle) * HAND_LENGTH_OPP / TRIG_MAX_RATIO) + center.x,
+    .y = int_round(cos_lookup(time_complication_minute_angle) * HAND_LENGTH_OPP / TRIG_MAX_RATIO) + center.y,
+  };
+  GPoint battery_line_point = {
+    .x = int_round(sin_lookup(time_complication_minute_angle) * battery_line_length / TRIG_MAX_RATIO) + battery_line_point_opp.x,
+    .y = int_round(-cos_lookup(time_complication_minute_angle) * battery_line_length / TRIG_MAX_RATIO) + battery_line_point_opp.y,
+  };
+  #ifdef PBL_PLATFORM_BASALT
+    graphics_context_set_stroke_width(ctx, 1);
+  #endif
+  graphics_context_set_stroke_color(ctx, GColorWhite);
+  graphics_draw_line(ctx, battery_line_point_opp, battery_line_point);
+
   if (battery_complication_charge_percent > 20 && persist_read_int(HIDE_SECONDS) == 0) {
     #ifdef PBL_COLOR
       graphics_context_set_fill_color(ctx, GColorRed);
       graphics_context_set_stroke_color(ctx, GColorRed);
+    #else
+      graphics_context_set_stroke_color(ctx, GColorBlack);
     #endif
     #ifdef PBL_PLATFORM_BASALT
       graphics_context_set_stroke_width(ctx, 3);
     #endif
 
     GPoint second_hand = {
-      .x = (int16_t)(sin_lookup(time_complication_second_angle) * SECOND_HAND_LENGTH / TRIG_MAX_RATIO) + center.x ,
-      .y = (int16_t)(-cos_lookup(time_complication_second_angle) * SECOND_HAND_LENGTH / TRIG_MAX_RATIO) + center.y ,
+      .x = int_round(sin_lookup(time_complication_second_angle) * SECOND_HAND_LENGTH / TRIG_MAX_RATIO) + center.x,
+      .y = int_round(-cos_lookup(time_complication_second_angle) * SECOND_HAND_LENGTH / TRIG_MAX_RATIO) + center.y,
     };
     GPoint second_hand_opp = {
-      .x = (int16_t)(-sin_lookup(time_complication_second_angle) * SECOND_HAND_OPP_LENGTH / TRIG_MAX_RATIO) + center.x,
-      .y = (int16_t)(cos_lookup(time_complication_second_angle) * SECOND_HAND_OPP_LENGTH / TRIG_MAX_RATIO) + center.y,
+      .x = int_round(-sin_lookup(time_complication_second_angle) * HAND_LENGTH_OPP / TRIG_MAX_RATIO) + center.x,
+      .y = int_round(cos_lookup(time_complication_second_angle) * HAND_LENGTH_OPP / TRIG_MAX_RATIO) + center.y,
     };
     graphics_draw_line(ctx, second_hand_opp, second_hand);
     if (battery_complication_is_charging) { graphics_fill_circle(ctx, second_hand_opp, 5); }
     else if (battery_complication_is_plugged) {}
     else { graphics_fill_circle(ctx, second_hand, 5); }
+    graphics_fill_circle(ctx, GPoint(center.x, center.y), 3);
   }
 
-  if (!bluetooth_complication_bluetooth)
+  if (!bluetooth_complication_bluetooth) {
     graphics_context_set_fill_color(ctx, GColorWhite);
-
-  graphics_fill_circle(ctx, GPoint(center.x, center.y), 3);
+    graphics_fill_circle(ctx, GPoint(center.x, center.y), 3);
+  }
 }
 
 static void layer_create_update_add(Layer *layer, Layer *window_layer, LayerUpdateProc update_proc) {
@@ -274,6 +296,7 @@ static void deinit(void) {
   tick_timer_service_unsubscribe();
   battery_state_service_unsubscribe();
   bluetooth_connection_service_unsubscribe();
+  app_message_deregister_callbacks();
   window_destroy(window);
 }
 

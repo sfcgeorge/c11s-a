@@ -2,6 +2,7 @@
 
 #include <pebble.h>
 
+int int_round(double r);
 void window_render(void);
 
 #define NUM_CLOCK_TICKS 12
@@ -71,8 +72,7 @@ ComplicationZone complications_br;
 static GRect tick_rects[NUM_CLOCK_TICKS];
 static GPath *minute_arrow, *hour_arrow;
 
-static const int32_t SECOND_HAND_LENGTH = 51;
-static const int32_t SECOND_HAND_OPP_LENGTH = 18;
+static const float SECOND_HAND_LENGTH = 50;
 
 static int TICK_SIZE = 6;
 
@@ -80,22 +80,24 @@ static const int tick_points[NUM_CLOCK_TICKS][2] = {
   {141, 84}, {141, 124}, {119, 165}, {72, 165}, {25, 165}, {3, 124}, {3, 84}, {3, 44}, {25, 3}, {72, 3}, {119, 3}, {141, 44}
 };
 
+static const float MINUTE_HAND_LENGTH = 66;
+static const float HAND_LENGTH_OPP = 17.0;
 static const GPathInfo MINUTE_HAND_POINTS = {
   4,
   (GPoint []) {
-    { -5, 18 },
-    { 5, 18 },
-    { 5, -64 },
-    { -5, -64 }
+    { -5, 17 },
+    { 5, 17 },
+    { 5, -66 },
+    { -5, -66 }
   }
 };
 
 static const GPathInfo HOUR_HAND_POINTS = {
   4,
   (GPoint []) {
-    { -5, 18 },
-    { 5, 18 },
-    { 5, -42 },
-    { -5, -42 }
+    { -5, 17 },
+    { 5, 17 },
+    { 5, -44 },
+    { -5, -44 }
   }
 };

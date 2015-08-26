@@ -1,10 +1,10 @@
 var maxAttempts = 3;
-var weatherAttempts = 0;
+var locationAttempts = 0;
 var sendAttempts = 0;
 
 Pebble.addEventListener('ready', function() {
   console.log('Pebble JS ready');
-  getWeather();
+  if (localStorage.getItem('DISABLE_WEATHER') * 1 != 1) getWeather();
 });
 
 Pebble.addEventListener('showConfiguration', function() {
@@ -14,6 +14,7 @@ Pebble.addEventListener('showConfiguration', function() {
 Pebble.addEventListener('webviewclosed', function(e) {
   var configData = JSON.parse(decodeURIComponent(e.response));
   console.log('Configuration page returned: ' + JSON.stringify(configData));
+  localStorage.setItem('DISABLE_WEATHER', configData.DISABLE_WEATHER);
 
   // Send to watchapp
   Pebble.sendAppMessage(configData, function() {
@@ -23,18 +24,19 @@ Pebble.addEventListener('webviewclosed', function(e) {
   });
 });
 
-Pebble.addEventListener('appmessage',
-  function() {
-    console.log('AppMessage received!');
-    getWeather();
-  }
-);
+Pebble.addEventListener('appmessage', function() {
+  console.log('AppMessage received!');
+  getWeather();
+});
 
 function getWeather() {
   locationAttempts += 1;
   navigator.geolocation.getCurrentPosition(
     locationSuccess,
-    locationError,
+    function() {
+      console.log('Error requesting location! ' + locationAttempts);
+      if (locationAttempts < maxAttempts) getWeather();
+    },
     { timeout: 15000, maximumAge: 60000 }
   );
   locationAttempts = 0;
@@ -60,7 +62,7 @@ function locationSuccess(pos) {
   });
 }
 
-function sendWeather() {
+function sendWeather(weatherData) {
   sendAttempts += 1;
   Pebble.sendAppMessage(weatherData, function() {
     console.log('Weather send successful: ' + JSON.stringify(weatherData));
@@ -69,11 +71,6 @@ function sendWeather() {
     if (sendAttempts < maxAttempts) sendWeather();
   });
   sendAttempts = 0;
-}
-
-function locationError() {
-  console.log('Error requesting location! ' + locationAttempts);
-  if (locationAttempts < maxAttempts) getWeather();
 }
 
 var xhrRequest = function (url, type, callback) {

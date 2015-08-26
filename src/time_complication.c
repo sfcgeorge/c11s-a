@@ -1,6 +1,7 @@
 #include <pebble.h>
 #include "c11s-a.h"
 #include "time_complication.h"
+#include "weather_complication.h"
 
 const char MONTH_NAMES[12][4] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 const char DAY_NAMES[7][3] = {"Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"};
@@ -22,11 +23,8 @@ void time_complication_update(struct tm *tm, TimeUnits units_changed) {
   time_complication_minute_angle = TRIG_MAX_ANGLE * tm->tm_min / 60;
 
   // Get weather update every 30 minutes
-  if (persist_read_int(DISABLE_WEATHER) != 1 && tm->tm_min % 30 == 0) {
-    DictionaryIterator *iter;
-    app_message_outbox_begin(&iter);
-    dict_write_uint8(iter, 0, 0);
-    app_message_outbox_send();
+  if (tm->tm_min % 30 == 0) {
+    weather_message();
   }
 
   if (units_changed <= MINUTE_UNIT) return;
