@@ -1,3 +1,7 @@
+var maxAttempts = 3;
+var weatherAttempts = 0;
+var sendAttempts = 0;
+
 Pebble.addEventListener('ready', function() {
   console.log('Pebble JS ready');
   getWeather();
@@ -27,45 +31,49 @@ Pebble.addEventListener('appmessage',
 );
 
 function getWeather() {
+  locationAttempts += 1;
   navigator.geolocation.getCurrentPosition(
     locationSuccess,
     locationError,
     { timeout: 15000, maximumAge: 60000 }
   );
+  locationAttempts = 0;
 }
 
 function locationSuccess(pos) {
   // Construct URL
   var url = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
       pos.coords.latitude + '&lon=' + pos.coords.longitude;
+  console.log('Weather URL: ' + url);
 
   xhrRequest(url, 'GET', function(responseText) {
     var json = JSON.parse(responseText);
 
-    // Temperature in Kelvin requires adjustment
-    var temperature = Math.round(json.main.temp - 273.15);
-
-    // Conditions
-    var conditions = json.weather[0].main;
-
-    var weatherData = {
+    // var conditions = json.weather[0].main;
+    sendWeather({
       "WEATHER_TEMPERATURE": Math.round(json.main.temp - 273.15), // Kelvin to C
       "WEATHER_HIGH": Math.round(json.main.temp_max - 273.15),
       "WEATHER_LOW": Math.round(json.main.temp_min - 273.15),
       "WEATHER_HUMIDITY": Math.round(json.main.humidity),
       "WEATHER_WIND_SPEED": Math.round(json.wind.speed)
-    };
-
-    Pebble.sendAppMessage(weatherData, function() {
-      console.log('Weather send successful: ' + JSON.stringify(weatherData));
-    }, function() {
-      console.log('Error sending weather info to Pebble!');
     });
   });
 }
 
+function sendWeather() {
+  sendAttempts += 1;
+  Pebble.sendAppMessage(weatherData, function() {
+    console.log('Weather send successful: ' + JSON.stringify(weatherData));
+  }, function() {
+    console.log('Error sending weather info to Pebble! ' + sendAttempts);
+    if (sendAttempts < maxAttempts) sendWeather();
+  });
+  sendAttempts = 0;
+}
+
 function locationError() {
-  console.log('Error requesting location!');
+  console.log('Error requesting location! ' + locationAttempts);
+  if (locationAttempts < maxAttempts) getWeather();
 }
 
 var xhrRequest = function (url, type, callback) {
