@@ -8,7 +8,7 @@ Pebble.addEventListener('ready', function() {
 });
 
 Pebble.addEventListener('showConfiguration', function() {
-  Pebble.openURL('https://rawgit.com/sfcgeorge/c11s-a/master/config/index.html');
+  Pebble.openURL('https://rawgit.com/sfcgeorge/c11s-a/development/config/index.html');
 });
 
 Pebble.addEventListener('webviewclosed', function(e) {
