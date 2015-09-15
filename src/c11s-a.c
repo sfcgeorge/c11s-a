@@ -29,19 +29,76 @@ void window_render(void) {
   layer_mark_dirty(window_get_root_layer(window));
 }
 
-static void bg_update_proc(Layer *layer, GContext *ctx) {
-  graphics_context_set_fill_color(ctx, GColorBlack);
-  for (int i = 0; i < NUM_CLOCK_TICKS; i++)
-    graphics_fill_rect(ctx, tick_rects[i], 0, 0x0000);
+static void set_colors(GContext *ctx, GColor color) {
+  graphics_context_set_fill_color(ctx, color);
+  graphics_context_set_text_color(ctx, color);
+  graphics_context_set_stroke_color(ctx, color);
+}
+
+static void set_invert_color(bool invert, GContext *ctx) {
+  GColor color;
+  if (persist_read_int(INVERT_BACKGROUND) != 0) {
+    color = invert ?
+      GColorWhite :
+      GColorBlack;
+  } else {
+    color = invert ?
+      GColorBlack :
+      GColorWhite;
+  }
+  set_colors(ctx, color);
+}
+
+static void set_background_color(GContext *ctx) {
+  set_invert_color(false, ctx);
+}
+
+static void set_foreground_color(GContext *ctx) {
+  set_invert_color(true, ctx);
+}
+
+static void set_main_color(GContext *ctx) {
+  #ifdef PBL_COLOR
+    GColor color = persist_exists(MAIN_COLOR) ?
+      GColorFromHEX(persist_read_int(MAIN_COLOR)) :
+      GColorDarkGray;
+    set_colors(ctx, color);
+  #else
+    set_foreground_color(ctx);
+  #endif
+}
+
+static void set_seconds_color(GContext *ctx) {
+  #ifdef PBL_COLOR
+    GColor color = persist_exists(SECONDS_COLOR) ?
+      GColorFromHEX(persist_read_int(SECONDS_COLOR)) :
+      GColorRed;
+    set_colors(ctx, color);
+  #else
+    set_foreground_color(ctx);
+  #endif
 }
 
 static void complications_update_proc(Layer *layer, GContext *ctx) {
   GRect bounds = layer_get_bounds(layer);
-  int inset_x = 6; int inset_y = 5; int text_h = 18 + 2;
-  GRect top_frame = GRect(inset_x, inset_y, bounds.size.w - inset_x * 2, text_h);
-  GRect bottom_frame = GRect(inset_x, bounds.size.h - inset_y - text_h, bounds.size.w - inset_x * 2, text_h);
 
-  graphics_context_set_text_color(ctx, GColorBlack);
+  set_background_color(ctx);
+  graphics_fill_rect(ctx, bounds, 0, 0x0000);
+
+  set_main_color(ctx);
+  for (int i = 0; i < NUM_CLOCK_TICKS; i++)
+    graphics_fill_rect(ctx, tick_rects[i], 0, 0x0000);
+
+  int inset_x = 6; int inset_y = -4; int text_h = 12;
+  GRect rect_top_frame = GRect(0, 0, bounds.size.w, text_h);
+  GRect rect_bottom_frame = GRect(0, bounds.size.h - text_h, bounds.size.w, text_h);
+  graphics_fill_rect(ctx, rect_top_frame, 0, 0x0000);
+  graphics_fill_rect(ctx, rect_bottom_frame, 0, 0x0000);
+
+  GRect top_frame = GRect(inset_x, inset_y, bounds.size.w - inset_x * 2, text_h);
+  GRect bottom_frame = GRect(inset_x, bounds.size.h + inset_y + 1 - text_h, bounds.size.w - inset_x * 2, text_h);
+
+  set_background_color(ctx);
   GFont *font = fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD);
 
   char text[9];
@@ -91,8 +148,7 @@ static void hands_update_proc(Layer *layer, GContext *ctx) {
   GRect bounds = layer_get_bounds(layer);
   GPoint center = grect_center_point(&bounds);
 
-  graphics_context_set_fill_color(ctx, GColorBlack);
-  graphics_context_set_stroke_color(ctx, GColorBlack);
+  set_foreground_color(ctx);
 
   gpath_move_to(hour_arrow, center);
   gpath_rotate_to(hour_arrow, time_complication_hour_angle);
@@ -114,16 +170,11 @@ static void hands_update_proc(Layer *layer, GContext *ctx) {
   #ifdef PBL_PLATFORM_BASALT
     graphics_context_set_stroke_width(ctx, 1);
   #endif
-  graphics_context_set_stroke_color(ctx, GColorWhite);
+  set_background_color(ctx);
   graphics_draw_line(ctx, battery_line_point_opp, battery_line_point);
 
   if (battery_complication_charge_percent > 20 && persist_read_int(HIDE_SECONDS) == 0) {
-    #ifdef PBL_COLOR
-      graphics_context_set_fill_color(ctx, GColorRed);
-      graphics_context_set_stroke_color(ctx, GColorRed);
-    #else
-      graphics_context_set_stroke_color(ctx, GColorBlack);
-    #endif
+    set_seconds_color(ctx);
     #ifdef PBL_PLATFORM_BASALT
       graphics_context_set_stroke_width(ctx, 3);
     #endif
@@ -144,7 +195,7 @@ static void hands_update_proc(Layer *layer, GContext *ctx) {
   }
 
   if (!bluetooth_complication_bluetooth) {
-    graphics_context_set_fill_color(ctx, GColorWhite);
+    set_background_color(ctx);
     graphics_fill_circle(ctx, GPoint(center.x, center.y), 3);
   }
 }
@@ -236,9 +287,8 @@ static void window_load(Window *window) {
   battery_complication_update(battery_state_service_peek());
   bluetooth_complication_update(bluetooth_connection_service_peek());
 
-  layer_create_update_add(bg_layer, window_layer, bg_update_proc);
-  layer_create_update_add(hands_layer, window_layer, hands_update_proc);
   layer_create_update_add(complications_layer, window_layer, complications_update_proc);
+  layer_create_update_add(hands_layer, window_layer, hands_update_proc);
 
   init_complication(&complications_tl);
   init_complication(&complications_tr);
@@ -249,7 +299,6 @@ static void window_load(Window *window) {
 }
 
 static void window_unload(Window *window) {
-  layer_destroy(bg_layer);
   layer_destroy(complications_layer);
   layer_destroy(hands_layer);
 

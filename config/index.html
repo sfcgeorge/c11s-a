@@ -10,6 +10,25 @@
 
   <body>
     <div class='item-container'>
+      <div class='item-container-header'>Color</div>
+
+      <div class='item-container-content'>
+        <label class="item">
+          Invert Background
+          <input type="checkbox" class="item-toggle" id="INVERT_BACKGROUND">
+        </label>
+        <label class="item">
+          Main Color
+          <input type="text" class="item-color item-color-sunny" id="MAIN_COLOR" value="0x000000">
+        </label>
+        <label class="item">
+          Seconds Color
+          <input type="text" class="item-color item-color-sunny" id="SECONDS_COLOR" value="0x99353f">
+        </label>
+      </div>
+    </div>
+
+    <div class='item-container'>
       <div class='item-container-header'>Complications</div>
 
       <div class='item-container-content'>
@@ -353,6 +372,10 @@
     <script>
       function getConfigData() {
         var options = {
+          'INVERT_BACKGROUND': $("#INVERT_BACKGROUND").prop('checked') * 1,
+          'MAIN_COLOR': $("#MAIN_COLOR").val() * 1,
+          'SECONDS_COLOR': $("#SECONDS_COLOR").val() * 1,
+
           'COMPLICATIONS_TL_L': $("#COMPLICATIONS_TL_L").val() * 1,
           'COMPLICATIONS_TL_R': $("#COMPLICATIONS_TL_R").val() * 1,
           'COMPLICATIONS_TR_L': $("#COMPLICATIONS_TR_L").val() * 1,
@@ -368,6 +391,8 @@
         };
 
         // Save for next launch
+        localStorage['INVERT_BACKGROUND'] = options['INVERT_BACKGROUND'];
+
         localStorage['COMPLICATIONS_TL_L'] = options['COMPLICATIONS_TL_L'];
         localStorage['COMPLICATIONS_TL_R'] = options['COMPLICATIONS_TL_R'];
         localStorage['COMPLICATIONS_TR_L'] = options['COMPLICATIONS_TR_L'];
@@ -407,6 +432,10 @@
         });
 
         // Load any previously saved configuration, if available
+        $("#INVERT_BACKGROUND").prop("checked", localStorage['INVERT_BACKGROUND'] * 1);
+        $("#MAIN_COLOR").val(localStorage['MAIN_COLOR'] || "0x000000");
+        $("#SECONDS_COLOR").val(localStorage['SECONDS_COLOR'] || "0x99353f");
+
         $("#COMPLICATIONS_TL_L").val(localStorage['COMPLICATIONS_TL_L'] || 9);
         $("#COMPLICATIONS_TL_R").val(localStorage['COMPLICATIONS_TL_R'] || 7);
         $("#COMPLICATIONS_TR_L").val(localStorage['COMPLICATIONS_TR_L'] || 2);

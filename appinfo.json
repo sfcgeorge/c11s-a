@@ -14,6 +14,9 @@
     "location"
   ],
   "appKeys": {
+    "INVERT_BACKGROUND": 50,
+    "MAIN_COLOR": 51,
+    "SECONDS_COLOR": 52,
     "COMPLICATIONS_TL_L": 1,
     "COMPLICATIONS_TL_R": 2,
     "COMPLICATIONS_TR_L": 3,
