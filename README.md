@@ -5,7 +5,7 @@
 ![](https://assets.getpebble.com/api/file/QcEDXcBsRR4VqtTzOKag/convert?cache=true&fit=crop&w=144&h=168)
 ![](https://assets.getpebble.com/api/file/TtXWLFdTQH6d0QCSo6hl/convert?cache=true&fit=crop&w=144&h=168)
 
-Complications-Analogue. A highly customizable watchface yet with minimal design and fast code.
+[Complications-Analogue](https://apps.getpebble.com/en_US/application/55d91423391704d7e600004a). A highly customizable watchface yet with minimal design and fast code.
 
 Each corner has a "complication" with 2 customizable slots—you can show 8 pieces of data! There are many options to choose from: time, date, weather, battery and more, check out settings.
 
