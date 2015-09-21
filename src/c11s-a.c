@@ -92,24 +92,38 @@ static void set_seconds_color(GContext *ctx) {
 
 static void complications_update_proc(Layer *layer, GContext *ctx) {
   GRect bounds = layer_get_bounds(layer);
-  int inset_x = 8; int inset_y = -3; int text_h = 14;
+  // int inset_x = 8; int inset_y = -3; int text_h = 14;
 
-  set_main_color(ctx);
-  graphics_fill_rect(ctx, bounds, 0, GCornerNone);
+  // set_main_color(ctx);
+  // graphics_fill_rect(ctx, bounds, 0, GCornerNone);
+
+  // set_background_color(ctx);
+  // GRect background_rect = GRect(0, text_h, bounds.size.w, bounds.size.h - text_h * 2);
+  // graphics_fill_rect(ctx, background_rect, 4, GCornersAll);
+
+  // set_main_color(ctx);
+  // for (int i = 0; i < NUM_CLOCK_TICKS; i++)
+    // graphics_fill_rect(ctx, tick_rects[i], 0, GCornerNone);
+
+  // set_background_color(ctx);
+  // GFont *font = fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD);
+
+  // GRect top_frame = GRect(inset_x, inset_y, bounds.size.w - inset_x * 2, text_h);
+  // GRect bottom_frame = GRect(inset_x, bounds.size.h + inset_y - text_h, bounds.size.w - inset_x * 2, text_h);
+  int inset_x = 8; int inset_y = 6; int text_h = 14;
 
   set_background_color(ctx);
-  GRect background_rect = GRect(0, text_h, bounds.size.w, bounds.size.h - text_h * 2);
-  graphics_fill_rect(ctx, background_rect, 4, GCornersAll);
+  graphics_fill_rect(ctx, bounds, 0, GCornerNone);
 
   set_main_color(ctx);
   for (int i = 0; i < NUM_CLOCK_TICKS; i++)
     graphics_fill_rect(ctx, tick_rects[i], 0, GCornerNone);
 
-  set_background_color(ctx);
+  set_foreground_color(ctx);
   GFont *font = fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD);
 
-  GRect top_frame = GRect(inset_x, inset_y, bounds.size.w - inset_x * 2, text_h);
-  GRect bottom_frame = GRect(inset_x, bounds.size.h + inset_y - text_h, bounds.size.w - inset_x * 2, text_h);
+  GRect top_frame = GRect(inset_x, inset_y, bounds.size.w - inset_x * 2, text_h + inset_y);
+  GRect bottom_frame = GRect(inset_x, bounds.size.h - inset_y - text_h - 5, bounds.size.w - inset_x * 2, text_h);
 
   char text[9];
   strcpy(text, complications_tl.left);

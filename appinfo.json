@@ -3,7 +3,7 @@
   "shortName": "c11s-a",
   "longName": "c11s-a",
   "companyName": "sfcgeorge",
-  "versionLabel": "2.0",
+  "versionLabel": "2.2",
   "sdkVersion": "3",
   "targetPlatforms": ["aplite", "basalt"],
   "watchapp": {
