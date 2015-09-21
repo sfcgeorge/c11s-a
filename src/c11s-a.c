@@ -99,7 +99,7 @@ static void complications_update_proc(Layer *layer, GContext *ctx) {
 
   set_background_color(ctx);
   GRect background_rect = GRect(0, text_h, bounds.size.w, bounds.size.h - text_h * 2);
-  graphics_fill_rect(ctx, background_rect, 5, GCornersAll);
+  graphics_fill_rect(ctx, background_rect, 4, GCornersAll);
 
   set_main_color(ctx);
   for (int i = 0; i < NUM_CLOCK_TICKS; i++)

@@ -16,6 +16,7 @@ Pebble.addEventListener('webviewclosed', function(e) {
   console.log('Configuration page returned: ' + JSON.stringify(configData));
   localStorage.setItem('DISABLE_WEATHER', configData.DISABLE_WEATHER);
   configData.MAIN_COLOR = parseInt(configData.MAIN_COLOR);
+  configData.HANDS_COLOR = parseInt(configData.HANDS_COLOR);
   configData.SECONDS_COLOR = parseInt(configData.SECONDS_COLOR);
 
   // Send to watchapp
