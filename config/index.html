@@ -22,6 +22,10 @@
           <input type="text" class="item-color item-color-sunny" id="MAIN_COLOR" value="0x000000">
         </label>
         <label class="item">
+          Hands Color
+          <input type="text" class="item-color item-color-sunny" id="HANDS_COLOR" value="0x000000">
+        </label>
+        <label class="item">
           Seconds Color
           <input type="text" class="item-color item-color-sunny" id="SECONDS_COLOR" value="0x99353f">
         </label>
@@ -374,6 +378,7 @@
         var options = {
           'INVERT_BACKGROUND': $("#INVERT_BACKGROUND").prop('checked') * 1,
           'MAIN_COLOR': $("#MAIN_COLOR").val(),
+          'HANDS_COLOR': $("#HANDS_COLOR").val(),
           'SECONDS_COLOR': $("#SECONDS_COLOR").val(),
 
           'COMPLICATIONS_TL_L': $("#COMPLICATIONS_TL_L").val() * 1,
@@ -393,6 +398,7 @@
         // Save for next launch
         localStorage['INVERT_BACKGROUND'] = options['INVERT_BACKGROUND'];
         localStorage['MAIN_COLOR'] = options['MAIN_COLOR'];
+        localStorage['HANDS_COLOR'] = options['HANDS_COLOR'];
         localStorage['SECONDS_COLOR'] = options['SECONDS_COLOR'];
 
         localStorage['COMPLICATIONS_TL_L'] = options['COMPLICATIONS_TL_L'];
@@ -436,6 +442,7 @@
         // Load any previously saved configuration, if available
         $("#INVERT_BACKGROUND").prop("checked", localStorage['INVERT_BACKGROUND'] * 1);
         $("#MAIN_COLOR").val(localStorage['MAIN_COLOR'] || "0x000000");
+        $("#HANDS_COLOR").val(localStorage['HANDS_COLOR'] || "0x000000");
         $("#SECONDS_COLOR").val(localStorage['SECONDS_COLOR'] || "0x99353f");
 
         $("#COMPLICATIONS_TL_L").val(localStorage['COMPLICATIONS_TL_L'] || 9);

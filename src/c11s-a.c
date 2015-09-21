@@ -68,6 +68,17 @@ static void set_main_color(GContext *ctx) {
   #endif
 }
 
+static void set_hands_color(GContext *ctx) {
+  #ifdef PBL_COLOR
+    GColor color = persist_exists(HANDS_COLOR) ?
+      GColorFromHEX(persist_read_int(HANDS_COLOR)) :
+      GColorBlack;
+    set_colors(ctx, color);
+  #else
+    set_foreground_color(ctx);
+  #endif
+}
+
 static void set_seconds_color(GContext *ctx) {
   #ifdef PBL_COLOR
     GColor color = persist_exists(SECONDS_COLOR) ?
@@ -81,25 +92,24 @@ static void set_seconds_color(GContext *ctx) {
 
 static void complications_update_proc(Layer *layer, GContext *ctx) {
   GRect bounds = layer_get_bounds(layer);
+  int inset_x = 8; int inset_y = -3; int text_h = 14;
+
+  set_main_color(ctx);
+  graphics_fill_rect(ctx, bounds, 0, GCornerNone);
 
   set_background_color(ctx);
-  graphics_fill_rect(ctx, bounds, 0, 0x0000);
+  GRect background_rect = GRect(0, text_h, bounds.size.w, bounds.size.h - text_h * 2);
+  graphics_fill_rect(ctx, background_rect, 5, GCornersAll);
 
   set_main_color(ctx);
   for (int i = 0; i < NUM_CLOCK_TICKS; i++)
-    graphics_fill_rect(ctx, tick_rects[i], 0, 0x0000);
-
-  int inset_x = 6; int inset_y = -4; int text_h = 12;
-  GRect rect_top_frame = GRect(0, 0, bounds.size.w, text_h);
-  GRect rect_bottom_frame = GRect(0, bounds.size.h - text_h, bounds.size.w, text_h);
-  graphics_fill_rect(ctx, rect_top_frame, 0, 0x0000);
-  graphics_fill_rect(ctx, rect_bottom_frame, 0, 0x0000);
-
-  GRect top_frame = GRect(inset_x, inset_y, bounds.size.w - inset_x * 2, text_h);
-  GRect bottom_frame = GRect(inset_x, bounds.size.h + inset_y + 1 - text_h, bounds.size.w - inset_x * 2, text_h);
+    graphics_fill_rect(ctx, tick_rects[i], 0, GCornerNone);
 
   set_background_color(ctx);
   GFont *font = fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD);
+
+  GRect top_frame = GRect(inset_x, inset_y, bounds.size.w - inset_x * 2, text_h);
+  GRect bottom_frame = GRect(inset_x, bounds.size.h + inset_y - text_h, bounds.size.w - inset_x * 2, text_h);
 
   char text[9];
   strcpy(text, complications_tl.left);
@@ -148,7 +158,7 @@ static void hands_update_proc(Layer *layer, GContext *ctx) {
   GRect bounds = layer_get_bounds(layer);
   GPoint center = grect_center_point(&bounds);
 
-  set_foreground_color(ctx);
+  set_hands_color(ctx);
 
   gpath_move_to(hour_arrow, center);
   gpath_rotate_to(hour_arrow, time_complication_hour_angle);

@@ -11,6 +11,7 @@ void window_render(void);
 #define INVERT_BACKGROUND 50
 #define MAIN_COLOR 51
 #define SECONDS_COLOR 52
+#define HANDS_COLOR 53
 
 #define COMPLICATIONS_TL_L 1
 #define COMPLICATIONS_TL_R 2
@@ -78,11 +79,12 @@ static GPath *minute_arrow, *hour_arrow;
 
 static const float SECOND_HAND_LENGTH = 50;
 
-static int TICK_SIZE = 6;
+static int TICK_SIZE = 8;
 
 static const int tick_points[NUM_CLOCK_TICKS][2] = {
   // {141, 84}, {141, 124}, {119, 165}, {72, 165}, {25, 165}, {3, 124}, {3, 84}, {3, 44}, {25, 3}, {72, 3}, {119, 3}, {141, 44}
-  {141, 84}, {141, 124}, {112, 153}, {72, 153}, {32, 153}, {3, 124}, {3, 84}, {3, 44}, {32, 15}, {72, 15}, {112, 15}, {141, 44}
+  // {141, 84}, {141, 124}, {112, 153}, {72, 153}, {32, 153}, {3, 124}, {3, 84}, {3, 44}, {32, 15}, {72, 15}, {112, 15}, {141, 44}
+  {140, 84}, {140, 123}, {111, 152}, {72, 152}, {33, 152}, {4, 123}, {4, 84}, {4, 45}, {33, 16}, {72, 16}, {111, 16}, {140, 45}
 };
 
 static const float MINUTE_HAND_LENGTH = 66;
